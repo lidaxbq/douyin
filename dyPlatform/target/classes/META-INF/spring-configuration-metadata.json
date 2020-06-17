@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "my",
+      "type": "com.lida.dy.conf.ApplicationConf",
+      "sourceType": "com.lida.dy.conf.ApplicationConf"
+    }
+  ],
+  "properties": [
+    {
+      "name": "my.certification",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.lida.dy.conf.ApplicationConf",
+      "defaultValue": false
+    }
+  ],
+  "hints": []
+}
