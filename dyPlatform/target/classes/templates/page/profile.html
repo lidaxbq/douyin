@@ -65,7 +65,7 @@
                             <span class="doller_font" style="font-size: 18px;"
                                   th:text="${#numbers.formatDecimal(talentUser.predicatePlayUnit,1,0)}">128W</span>
                             <span class="xt_tip"
-                                  th:text="${talentUser.xtPrePlayNum*10000/talentUser.fansCount}">128W</span>
+                                  th:text="${#numbers.formatDecimal((talentUser.xtPrePlayNum*10000.0/talentUser.fansCount),1,0)}">128W</span>
                             <!--
                                                         <span class="doller_font" style="font-size: 18px;"
                                                               th:text="${#numbers.formatDecimal(talentUser.xtPrePlayNum/talentUser.fansCount,1,0)}">128W</span>

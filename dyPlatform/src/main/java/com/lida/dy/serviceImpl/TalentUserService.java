@@ -44,8 +44,8 @@ public class TalentUserService {
     //分页查询
     public Page<TalentUserInfoEntity> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-//        Page<TalentUserInfoEntity> pages = talentUserRepository.findAllByOther("1", pageable);
-        Page<TalentUserInfoEntity> pages = talentUserRepository.findAll(pageable);
+        Page<TalentUserInfoEntity> pages = talentUserRepository.findAllByOther("1", pageable);
+//        Page<TalentUserInfoEntity> pages = talentUserRepository.findAll(pageable);
         toolUtil.wrapperTanlentUserInfo(pages);
         return pages;
     }
@@ -67,8 +67,8 @@ public class TalentUserService {
         } else {
             pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortName));
         }
-//        Page<TalentUserInfoEntity> pages = talentUserRepository.findAllByOther("1", pageable);
-        Page<TalentUserInfoEntity> pages = talentUserRepository.findAll(pageable);
+        Page<TalentUserInfoEntity> pages = talentUserRepository.findAllByOther("1", pageable);
+//        Page<TalentUserInfoEntity> pages = talentUserRepository.findAll(pageable);
         toolUtil.wrapperTanlentUserInfo(pages);
         return pages;
     }
@@ -193,7 +193,7 @@ public class TalentUserService {
                 /*处理选择平台*/
                 predicateList.add(criteriaBuilder.equal(root.get("platformId"), mutilSearchVo.getPlatform()));
                 if (mutilSearchVo.getPlatform() == 1) {
-                   // predicateList.add(criteriaBuilder.equal(root.get("other"), "1"));
+                    predicateList.add(criteriaBuilder.equal(root.get("other"), "1"));
                 }
                 return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }

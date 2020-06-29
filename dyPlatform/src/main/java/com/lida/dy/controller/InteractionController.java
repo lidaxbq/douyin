@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.lida.dy.conf.DefaultConfig;
 import com.lida.dy.tool.Result;
 import com.lida.dy.utils.AESUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data")
 public class InteractionController {
-
+    @ApiOperation(value = "获取前后端加密通信秘钥")
     @GetMapping("/getAesdata")
     public Result getAesdata() {
         JSONObject jsonObject = new JSONObject();

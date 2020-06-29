@@ -10,6 +10,7 @@ import com.lida.dy.serviceImpl.TypeService;
 import com.lida.dy.tool.Result;
 import com.lida.dy.model.vo.MutilSearchVo;
 import com.lida.dy.model.vo.TypeDataVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,7 @@ public class PlatformController {
 
     @GetMapping("/multiSearch/getTypeId/{name}")
     @ResponseBody
+    @ApiOperation("根据达人类型名字获取类型数据")
     public Result getTypeId(@PathVariable String name) {
         List<TalentTypeEntity> talentTypeEntity = typeService.getTalentTypeEntityByName(name);
         if (talentTypeEntity != null) {
@@ -60,6 +62,7 @@ public class PlatformController {
 
     @GetMapping("/platform/getAllPlatformData/{platformId}")
     @ResponseBody
+    @ApiOperation("获取平台指标数据")
     public Result getAllPlatformData(@PathVariable int platformId) {
         List<PlatformPropertyAnalyseEntity> allPlatformData = platformService.getAllPlatformData(platformId, DefaultConfig.defaultPlatformDataSize);
         return Result.success(allPlatformData);
@@ -78,6 +81,7 @@ public class PlatformController {
     }
 
     @PostMapping("/multiSearch")
+    @ApiOperation("多条件搜索")
     public String multiSearch(MutilSearchVo mutilSearchVo) {
         talentUserService.multiSearch(mutilSearchVo);
         return null;

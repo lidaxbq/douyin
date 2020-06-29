@@ -5,6 +5,8 @@ import com.lida.dy.service.UserSerivce;
 import com.lida.dy.serviceImpl.RedisService;
 import com.lida.dy.tool.Result;
 import com.lida.dy.model.vo.RegisterUserVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/register")
+@Api(tags = "注册相关")
 public class RegisterController {
     @Autowired
     UserSerivce userSerivce;
@@ -26,6 +29,7 @@ public class RegisterController {
     /*发送验证码*/
     @PostMapping("/sendEmialCheckCode")
     @ResponseBody
+    @ApiOperation("向指定邮箱发送验证码")
     public Result sendEmialCheckCode(@RequestParam("email") String email) {
         System.out.println(email);
         if (email != null) {
@@ -44,6 +48,7 @@ public class RegisterController {
     /*校验验证码*/
     @PostMapping("/register")
     @ResponseBody
+    @ApiOperation("校验验证码并注册")
     public Result register(RegisterUserVO userVO) {
         System.out.println(userVO);
         if (userVO != null) {

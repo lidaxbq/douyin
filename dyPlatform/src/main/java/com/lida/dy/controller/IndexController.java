@@ -5,6 +5,8 @@ import com.lida.dy.model.entity.TalentUserInfoEntity;
 import com.lida.dy.model.vo.MutilSearchVo;
 import com.lida.dy.serviceImpl.TalentUserService;
 import com.lida.dy.utils.ToolUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,8 @@ public class IndexController {
     TalentUserService talentUserService;
     @Autowired
     ToolUtil toolUtil;
-
+    @ApiOperation(value = "多条件搜索")
+    @ApiImplicitParam(name = "data", defaultValue = "{\"keyWord:\":null,\"sortWord\":null,\"isDESC\":true,\"page\":1,\"size\":10,\"type\":[],\"value\":[],\"fans\":[\"0.2w\"],\"platform\":1}", required = true)
     @RequestMapping(value = "/index/mutilSearch", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public String mutilSearch(Model model, @RequestParam String data) {
         System.out.println(data);

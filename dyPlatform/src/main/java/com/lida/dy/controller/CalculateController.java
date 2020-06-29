@@ -11,6 +11,9 @@ import com.lida.dy.tool.Result;
 import com.lida.dy.utils.Page;
 import com.lida.dy.utils.ThymeleafUtil;
 import com.lida.dy.utils.ToolUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ import java.util.*;
  */
 @Controller
 @Slf4j
+@Api(tags = "结算相关接口")
 public class CalculateController {
     @Autowired
     TalentUserService talentUserService;
@@ -45,13 +49,13 @@ public class CalculateController {
     /**
      * 上传候选列表计算背包
      *
-     * @param model
      * @param bagVo
      * @return
      */
     @PostMapping("/calculate/calculate")
     @ResponseBody
-    public Result calculate(Model model, BagVo bagVo) {
+    @ApiOperation("上传候选达人列表计算背包")
+    public Result calculate( BagVo bagVo) {
         if (bagVo != null) {
             log.info("======= 背包計算 =====");
             log.info("入參： {}", bagVo.toString());
@@ -72,13 +76,13 @@ public class CalculateController {
     /**
      * 全局计算
      *
-     * @param model
      * @param bagVo
      * @return
      */
     @PostMapping("/calculate/calculate/all")
     @ResponseBody
-    public Result calculateAll(Model model, BagVo bagVo) {
+    @ApiOperation("全局计算背包")
+    public Result calculateAll( BagVo bagVo) {
         if (bagVo != null) {
             log.info("======= 背包計算 =====");
             log.info("入參： {}", bagVo.toString());
@@ -99,6 +103,7 @@ public class CalculateController {
     }
 
     @PostMapping("/calculate/updateCandidate")
+    @ApiOperation(value = "",hidden = true)
     public String updateCandidate(Model model, @RequestParam String data) {
         System.out.println(data);
         List<TalentUserInfoEntity> candidatePage = updatePanel(model, data, "candidatePage");
@@ -139,7 +144,7 @@ public class CalculateController {
             return null;
         }
     }
-
+    @ApiOperation(value = "",hidden = true)
     @PostMapping("/calculate/updateLastCandidate")
     public String updateLastCandidate(Model model, @RequestParam String data) {
         System.out.println(data);
@@ -148,7 +153,7 @@ public class CalculateController {
 
     }
 
-
+    @ApiOperation(value = "",hidden = true)
     @PostMapping("/calculate/updateAllCandidate")
     public String updateLastCandidate(Model model, @RequestParam String data, @RequestParam String dataLast) {
         System.out.println(data);
@@ -157,13 +162,13 @@ public class CalculateController {
         List<TalentUserInfoEntity> candidatePage = updatePanel(model, data, "candidatePage");
         return "page/settlement::main_right";
     }
-
+    @ApiOperation(value = "",hidden = true)
     @GetMapping("/getCandidate")
     public String getCandidate(HttpSession session, Model model) {
         getTalentUserInfoPage(model, session);
         return "page/settlement::candidatePanel";
     }
-
+    @ApiOperation(value = "",hidden = true)
     @GetMapping("/getLastCandidate")
     public String getLastCandidate(HttpSession session, Model model) {
         getTalentUserInfoPageForLast(model, session);
@@ -221,7 +226,7 @@ public class CalculateController {
             model.addAttribute("lastCandidatePage", new Page());
         }
     }
-
+    @ApiOperation(value = "",hidden = true)
     @GetMapping("/calculate/getCandidateNum")
     @ResponseBody
     public Result getCandidateNum(HttpSession session) {
@@ -285,6 +290,7 @@ public class CalculateController {
         return flag;
     }
 
+    @ApiOperation(value = "获取所有达人类别")
     @GetMapping("/calculate/getAllTalentType")
     @ResponseBody
     public Result getAllTalentType() {
@@ -294,6 +300,8 @@ public class CalculateController {
 
     @PostMapping("/calculate/getTotalPrice")
     @ResponseBody
+    @ApiOperation(value = "上传达人id列表，计算达人报价之和")
+    @ApiImplicitParam(name = "data", value = "达人id列表", defaultValue = "2,1,3", required = true)
     public Result getTotalPrice(@RequestParam String data) {
         System.out.println(data);
         Set<Integer> ids = new HashSet<>();

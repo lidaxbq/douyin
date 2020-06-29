@@ -8,6 +8,9 @@ import com.lida.dy.serviceImpl.CoreService;
 import com.lida.dy.serviceImpl.ProfileService;
 import com.lida.dy.serviceImpl.TalentUserService;
 import com.lida.dy.tool.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Controller
+@Api("达人信息页面相关")
 public class ProfileController {
     @Autowired
     ProfileService profileService;
@@ -35,6 +39,7 @@ public class ProfileController {
 
     @GetMapping("/profile/getVideoNum/{id}")
     @ResponseBody
+    @ApiOperation("获取达人的视频数量")
     public Result getVideoNum(@PathVariable int id) {
         VideoVo videoVo = profileService.getLastVideoInfoByNum(id, DefaultConfig.defaultProfileVideoNum);
         if (videoVo != null) {
@@ -48,6 +53,7 @@ public class ProfileController {
 
     @GetMapping("/profile/getFansChange/{id}")
     @ResponseBody
+    @ApiOperation("获得粉丝变化数据")
     public Result getFansChange(@PathVariable int id) {
         List<FanChangeEntity> lastFanChangeByNum = profileService.getLastFanChangeByNum(id, DefaultConfig.defaultFanChangeNum);
         lastFanChangeByNum = filterMiniTimeInterval(lastFanChangeByNum);
@@ -75,6 +81,7 @@ public class ProfileController {
 
     @GetMapping("/profile/getActiveValue/{id}")
     @ResponseBody
+    @ApiOperation("获得真假粉粉丝比例")
     public Result getActiveValue(@PathVariable int id) {
         TalentUserInfoEntity talentUserInfoEntity = talentUserService.findById(id);
         if (talentUserInfoEntity != null) {

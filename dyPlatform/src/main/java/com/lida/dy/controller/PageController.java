@@ -9,6 +9,8 @@ import com.lida.dy.serviceImpl.UserSerivceImpl;
 import com.lida.dy.tool.Result;
 import com.lida.dy.utils.MD5Util;
 import com.lida.dy.utils.ToolUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import java.util.Set;
  * @Version: 1.0
  */
 @Controller
+@Api(tags = "页面跳转相关")
 public class PageController {
     @Autowired
     TalentUserService talentUserService;
@@ -43,7 +46,7 @@ public class PageController {
     public String index() {
         return "page/login";
     }
-
+    @ApiOperation("登录页面")
     @PostMapping("/login")
     public String login(Model model, HttpSession session, UserEntity userEntity) {
         String password = userEntity.getPasswd().trim();
@@ -69,13 +72,13 @@ public class PageController {
         model.addAttribute("login", false);
         return "page/login";
     }
-
+    @ApiOperation("注销")
     @GetMapping("/logout")
     public String login(Model model, HttpSession session) {
         session.removeAttribute(SessionKey.loginUserField);
         return "page/login";
     }
-
+    @ApiOperation("注册页面")
     @GetMapping("/register")
     public String login() {
         return "page/register";
@@ -84,6 +87,7 @@ public class PageController {
     /**
      * 重定向首页
      */
+    @ApiOperation("首页")
     @RequestMapping("/index")
     public String toindex() {
         return "page/index";
@@ -106,7 +110,7 @@ public class PageController {
 //        return "page/index";
 //    }
 
-
+    @ApiOperation("达人信息页面")
     @GetMapping("/talentInfo/{id}")
     public String talentInfo(Model model, HttpSession session, @PathVariable int id) {
         TalentUserInfoEntity talentUserInfoEntity = talentUserService.findById(id);
@@ -115,7 +119,7 @@ public class PageController {
         session.setAttribute(SessionKey.saveProfileField, id);
         return "page/profile";
     }
-
+    @ApiOperation("达人信息页面")
     @GetMapping("/talentInfo")
     public String talentInfoNoId(Model model, HttpSession session) {
         Integer id = (Integer) session.getAttribute(SessionKey.saveProfileField);
@@ -132,7 +136,7 @@ public class PageController {
         }
         return "page/profile";
     }
-
+    @ApiOperation("结算页面")
     @GetMapping("/calculate")
     public String talentInfo(Model model, HttpSession session) {
         calculateController.getCandidate(session, model);
@@ -140,51 +144,5 @@ public class PageController {
         return "page/settlement";
     }
 
-    @GetMapping("/calculatea")
-    @ResponseBody
-    public com.lida.dy.utils.Page talentInfso(Model model, HttpSession session) {
-        Set<Integer> lastIds = (Set<Integer>) session.getAttribute(SessionKey.lastCandidateSetField);
-        if (lastIds != null) {
-            List<TalentUserInfoEntity> talentUserInfoEntities = talentUserService.searchByListId(lastIds);
-            toolUtil.wrapperTanlentUserInfo(talentUserInfoEntities);
-            com.lida.dy.utils.Page page = new com.lida.dy.utils.Page();
-            page.setDataList(talentUserInfoEntities);
-            page.setTotalElement(talentUserInfoEntities.size());
-            return page;
-        }
-        return new com.lida.dy.utils.Page();
-    }
 
-    @GetMapping("/calculateb")
-    @ResponseBody
-    public com.lida.dy.utils.Page talentInfssdo(Model model, HttpSession session) {
-        Set<Integer> ids = (Set<Integer>) session.getAttribute(SessionKey.candidateSetField);
-        if (ids != null) {
-            List<TalentUserInfoEntity> talentUserInfoEntities = talentUserService.searchByListId(ids);
-            toolUtil.wrapperTanlentUserInfo(talentUserInfoEntities);
-            com.lida.dy.utils.Page page = new com.lida.dy.utils.Page();
-            page.setDataList(talentUserInfoEntities);
-            page.setTotalElement(talentUserInfoEntities.size());
-            return page;
-        } else {
-            return new com.lida.dy.utils.Page();
-        }
-    }
-
-    @GetMapping("/getOverlapAvatarLink")
-    @ResponseBody
-    public Result getOverlapAvatarLink(HttpSession session) {
-        Set<Integer> chongid = (Set<Integer>) session.getAttribute(SessionKey.chonghe);
-        if (chongid != null) {
-            ArrayList<String> link = new ArrayList<>();
-            for (Integer id : chongid) {
-                TalentUserInfoEntity ta = talentUserService.findById(id);
-                link.add(ta.getAvatarLink());
-            }
-            if (!link.isEmpty()) {
-                return Result.success(link);
-            }
-        }
-        return Result.fail();
-    }
 }

@@ -5,10 +5,16 @@ import com.lida.dy.model.entity.UserEntity;
 import com.lida.dy.service.UserSerivce;
 import com.lida.dy.serviceImpl.RedisService;
 import com.lida.dy.tool.Result;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +40,8 @@ public class LoginController {
      * @param data
      * @return
      */
+    @ApiOperation(value = "找回密码第一步，上传基本信息：邮箱")
+    @ApiImplicitParam(name = "data", value = "邮箱号", required = true)
     @PostMapping("/findPasswd/inputInfo")
     @ResponseBody
     public Result findPasswd(@RequestParam String data) {
@@ -81,6 +89,12 @@ public class LoginController {
      */
     @PostMapping("/findPasswd/verificate")
     @ResponseBody
+    @ApiOperation(value = "找回密码第二步，上传校验验证码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "key", value = "临时key，由第一步请求获得", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", required = true),
+            @ApiImplicitParam(name = "passwd", value = "新设置的密码", required = true)
+    })
     public Result findPasswdVerificate(@RequestParam String key, @RequestParam String code, @RequestParam String passwd) {
         if (key != null && code != null) {
             int id = redisService.checkVerificationCode(key, code);
